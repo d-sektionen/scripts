@@ -14,7 +14,7 @@ echo "Starting full system backup..."
 rsync -aAXvHS --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found",$BLOCATION} / $BLOCATION/$OF
 
 #Compress the backup
-tar -xZf $OF.tgz $OF
+tar -zcf $OF.tgz $OF
 
 #Remove the non-compressed folder
 rm -rf $BLOCATION/$OF
