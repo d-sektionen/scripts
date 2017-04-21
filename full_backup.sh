@@ -18,10 +18,12 @@ fi
 echo "Backuplocation $BLOCATION/$OF created"
 #The motherload....
 echo "Starting rsync..."
-rsync -aAXvHS --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found","$BLOCATION/*"} / $BLOCATION/$OF
+#rsync -aAXvHS --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found","$BLOCATION/*"} / $BLOCATION/$OF
+touch /backup/$OF/hej.txt
 echo "rsync done! Tar is next..."
 #Compress the backup
-tar -zcf $BLOCATION/$OF.tgz $BLOCATION/$OF
+cd $BLOCATION
+tar -zcf $OF.tgz $OF
 echo "Compressed and ready"
 #Remove the non-compressed folder
 rm -rf $BLOCATION/$OF
