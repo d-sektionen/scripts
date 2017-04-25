@@ -14,17 +14,17 @@ LOG="var/log/backup.log"
 exec > >(tee -ia /var/log/backup.log)
 exec 2> >(tee -ia /var/log/backup.log)
 
-echo "[$(date +%Y-%m-%d %H:%M)] Starting full system backup at $(date ,%H:%M)"
-echo "[$(date +%Y-%m-%d %H:%M)] Mounting /dev/vda1 to $BACKUP..."
+echo "[$(date +%Y-%m-%d,%H:%M)] Starting full system backup at $(date ,%H:%M)"
+echo "[$(date +%Y-%m-%d,%H:%M)] Mounting /dev/vda1 to $BACKUP..."
 
 if grep -qs "$BLOCATION" /proc/mounts; then
-  echo "[$(date +%Y-%m-%d %H:%M)] It's already mounted."
+  echo "[$(date +%Y-%m-%d,%H:%M)] It's already mounted."
 else
   mount "$mount"
   if [ $? -eq 0 ]; then
-   echo "[$(date +%Y-%m-%d %H:%M)] Mounted!"
+   echo "[$(date +%Y-%m-%d,%H:%M)] Mounted!"
   else
-   echo "[$(date +%Y-%m-%d %H:%M)] Something went wrong with the mount, exiting"
+   echo "[$(date +%Y-%m-%d,%H:%M)] Something went wrong with the mount, exiting"
    exit
   fi
 fi
@@ -32,36 +32,36 @@ fi
 mkdir $BLOCATION/$OF
 
 if [ ! -d "$BLOCATION/$OF" ]; then
-	echo "[$(date +%Y-%m-%d %H:%M)] Problem creating the backup folder $BLOCATION/$OF, exiting..."
+	echo "[$(date +%Y-%m-%d,%H:%M)] Problem creating the backup folder $BLOCATION/$OF, exiting..."
 	exit
 fi
-echo "[$(date +%Y-%m-%d %H:%M)] Backuplocation $BLOCATION/$OF created"
+echo "[$(date +%Y-%m-%d,%H:%M)] Backuplocation $BLOCATION/$OF created"
 #The motherload....
-echo "[$(date +%Y-%m-%d %H:%M)] Starting rsync..."
+echo "[$(date +%Y-%m-%d,%H:%M)] Starting rsync..."
 #rsync -aAXvHSq --exclude={"/var/cache/*","/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found","$BLOCATION/*"} / $BLOCATION/$OF
 touch $BLOCATION/$OF
-echo "[$(date +%Y-%m-%d %H:%M)] rsync done! Tar is next..."
+echo "[$(date +%Y-%m-%d,%H:%M)] rsync done! Tar is next..."
 
 #Compress the backup
 cd $BLOCATION
 tar -zcf $OF.tgz $OF
-echo "[$(date +%Y-%m-%d %H:%M)] Compressed and ready"
+echo "[$(date +%Y-%m-%d,%H:%M)] Compressed and ready"
 
 #Remove the non-compressed folder
 rm -rf $BLOCATION/$OF
-echo "[$(date +%Y-%m-%d %H:%M)] Raw data removed"
+echo "[$(date +%Y-%m-%d,%H:%M)] Raw data removed"
 
 #Remove backups older than MAXAGE
 #find $BLOCATION -mtime +$MAXAGE -type f -delete
-echo "[$(date +%Y-%m-%d %H:%M)] Old backups removed"
+echo "[$(date +%Y-%m-%d,%H:%M)] Old backups removed"
 
 #Chmod-things
 chown backup-bot:admins $BLOCATION/$OF.tgz
-echo "[$(date +%Y-%m-%d %H:%M)] Ownership of $BLOCATION/$OF established"
+echo "[$(date +%Y-%m-%d,%H:%M)] Ownership of $BLOCATION/$OF established"
 
 #Unmount
 umount $BLOCATION
-echo "[$(date +%Y-%m-%d %H:%M)] Unmounted $BLOCATION"
-echo "[$(date +%Y-%m-%d %H:%M)] Done"
+echo "[$(date +%Y-%m-%d,%H:%M)] Unmounted $BLOCATION"
+echo "[$(date +%Y-%m-%d,%H:%M)] Done"
 
 exit
