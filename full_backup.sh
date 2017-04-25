@@ -1,6 +1,6 @@
 #!/bin/bash
 #The user doing the backup, needs access to all the files!
-BUSER="backup-bot"
+BUSER="backup-bot:admins"
 #Location of the local backup
 BLOCATION="/backup"
 #Name of the backup
@@ -57,7 +57,7 @@ echo "[$(date +%Y-%m-%d,%H:%M)] Raw data removed"
 echo "[$(date +%Y-%m-%d,%H:%M)] Old backups removed"
 
 #Chmod-things
-chown backup-bot:admins $BLOCATION/$OF.tgz
+chown $BUSER $BLOCATION/$OF.tgz
 echo "[$(date +%Y-%m-%d,%H:%M)] Ownership of $BLOCATION/$OF established"
 
 #Unmount
