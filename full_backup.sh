@@ -14,7 +14,7 @@ LOG="var/log/backup.log"
 exec > >(tee -ia /var/log/backup.log)
 exec 2> >(tee -ia /var/log/backup.log)
 
-echo "[$(date +%Y-%m-%d,%H:%M)] Starting full system backup at $(date ,%H:%M)"
+echo "[$(date +%Y-%m-%d,%H:%M)] ####Starting full system backup####"
 echo "[$(date +%Y-%m-%d,%H:%M)] Mounting /dev/vda1 to $BACKUP..."
 
 if grep -qs "$BLOCATION" /proc/mounts; then
@@ -38,8 +38,9 @@ fi
 echo "[$(date +%Y-%m-%d,%H:%M)] Backuplocation $BLOCATION/$OF created"
 #The motherload....
 echo "[$(date +%Y-%m-%d,%H:%M)] Starting rsync..."
-#rsync -aAXvHSq --exclude={"/var/cache/*","/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found","$BLOCATION/*"} / $BLOCATION/$OF
-touch $BLOCATION/$OF
+rsync -aAXvHSq --exclude={"/var/cache/*","/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found","$BLOCATION/*"} / $BLOCATION/$OF
+#For testing
+#touch $BLOCATION/$OF
 echo "[$(date +%Y-%m-%d,%H:%M)] rsync done! Tar is next..."
 
 #Compress the backup
@@ -62,6 +63,6 @@ echo "[$(date +%Y-%m-%d,%H:%M)] Ownership of $BLOCATION/$OF established"
 #Unmount
 umount $BLOCATION
 echo "[$(date +%Y-%m-%d,%H:%M)] Unmounted $BLOCATION"
-echo "[$(date +%Y-%m-%d,%H:%M)] Done"
+echo "[$(date +%Y-%m-%d,%H:%M)] ====Done===="
 
 exit
