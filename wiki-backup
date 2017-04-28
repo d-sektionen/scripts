@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+# Hugo Hörnquist | hugho389
+# 2017-04-28
+#
+# Used to back up a specific wiki page from wiki.d-sektionen.se
+# example: wiki-packup https://wiki.d-sektionen.se/Webb-/infoutskottet web-info.html
+#
+# The auth token is currently the one belonging to me (hugho389), and should be
+# replaced with one for a user created for this purpose only
+
+if [ $# -lt 1 ] || [ $1 == "--help" ] || [ $1 == "-h" ]; then
+	echo "usage: wiki-backup url [output-file]"
+	exit 1
+fi
+
+curl \
+	'https://wiki.d-sektionen.se/Webb-/infoutskottet' \
+	-H 'Accept-Encoding:  gzip,  deflate,  sdch, br' \
+	-H  'Accept-Language: sv-SE,sv;q=0.8,en-US;q=0.6,en;q=0.4' \
+	-H \ 'Upgrade-Insecure-Requests: 1' \
+	-H  'User-Agent:  Mozilla/5.0  (X11;  Linux  x86_64)  AppleWebKit/537.36  (KHTML,  like  Gecko)  Chrome/52.0.2743.82 Safari/537.36' \
+	-H  'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8' \
+	-H  'Referer: https://wiki.d-sektionen.se/Special:Inloggning' \
+	-H  'Cookie:  dwiki_wiki__session=ntpe5qp590g96r71rvbscjhgu3e2o8dr;  dwiki_wiki_UserID=23;  dwiki_wiki_UserName=Hugho389; dwiki_wiki_Token=0215558af251c599655832affdc79156' \
+	-H  'Connection: keep-alive' \
+	-H  'If-Modified-Since:  Mon,  20  Feb  2017  13:50:17 GMT' \
+	-H  'Cache-Control: max-age=0' \
+	--compressed > ${2:-page.html}
