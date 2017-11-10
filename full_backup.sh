@@ -11,7 +11,7 @@ MAXAGE=7
 LOG="var/log/backup.log"
 
 #Mount, here add options here
-MOUNT="/dev/vda1 $BLOCATION"
+MOUNT="/dev/vda1"
 
 
 
@@ -20,7 +20,7 @@ exec > >(tee -ia /var/log/backup.log)
 exec 2> >(tee -ia /var/log/backup.log)
 
 echo "[$(date +%Y-%m-%d,%H:%M)] ####Starting full system backup####"
-echo "[$(date +%Y-%m-%d,%H:%M)] Mounting /dev/vda1 to $BACKUP..."
+echo "[$(date +%Y-%m-%d,%H:%M)] Mounting $MOUNT to $BACKUP..."
 
 if grep -qs "$BLOCATION" /proc/mounts; then
   echo "[$(date +%Y-%m-%d,%H:%M)] It's already mounted."
