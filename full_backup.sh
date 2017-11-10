@@ -10,6 +10,11 @@ MAXAGE=7
 #Log file location
 LOG="var/log/backup.log"
 
+#Mount, here add options here
+MOUNT="/dev/vda1 $BLOCATION"
+
+
+
 #Output STDOUT & STDERR both to log-file and terminal
 exec > >(tee -ia /var/log/backup.log)
 exec 2> >(tee -ia /var/log/backup.log)
@@ -20,7 +25,7 @@ echo "[$(date +%Y-%m-%d,%H:%M)] Mounting /dev/vda1 to $BACKUP..."
 if grep -qs "$BLOCATION" /proc/mounts; then
   echo "[$(date +%Y-%m-%d,%H:%M)] It's already mounted."
 else
-  mount "$mount"
+  mount "$MOUNT"
   if [ $? -eq 0 ]; then
    echo "[$(date +%Y-%m-%d,%H:%M)] Mounted!"
   else
