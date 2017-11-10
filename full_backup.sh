@@ -6,7 +6,7 @@ BLOCATION="/backup"
 #Name of the backup
 OF=$(date +%Y%m%d%H%M)_d-server
 #Number of backups to keep (= how old should the oldest be if run once each day)
-MAXAGE=7
+MAXAGE=10
 #Log file location
 LOG="var/log/backup.log"
 
@@ -53,16 +53,13 @@ rm -rf $BLOCATION/$OF
 echo "[$(date +%Y-%m-%d,%H:%M)] Raw data removed"
 
 #Remove backups older than MAXAGE
-#find $BLOCATION -mtime +$MAXAGE -type f -delete
+find $BLOCATION -mtime +$MAXAGE -type f -delete
 echo "[$(date +%Y-%m-%d,%H:%M)] Old backups removed"
 
 #Chmod-things
 chown $BUSER $BLOCATION/$OF.tgz
 echo "[$(date +%Y-%m-%d,%H:%M)] Ownership of $BLOCATION/$OF established"
 
-#Unmount
-umount $BLOCATION
-echo "[$(date +%Y-%m-%d,%H:%M)] Unmounted $BLOCATION"
 echo "[$(date +%Y-%m-%d,%H:%M)] ====Done===="
 
 exit
