@@ -15,6 +15,14 @@ MOUNT="/dev/vda1"
 
 ADMINEMAIL="webbutskottet@d.lintek.liu.se"
 
+#Send email if quitting in an unusial way
+function term {
+  echo "[$(date +%Y-%m-%d,%H:%M)] Termination, sending email to $ADMINEMAIL"
+  echo -e "Backup of d-sektionen failed :(\nLast 20 log entries were:\n$( tail -n 20 /var/log/backup.log )" | mailx -s 'Backup of d-sektionen.se failed $(date +%Y-%m-%d,%H:%M)' $ADMINEMAIL
+
+  echo "[$(date +%Y-%m-%d,%H:%M)] Exiting..."
+  exit
+}
 
 #Output STDOUT & STDERR both to log-file and terminal
 exec > >(tee -ia /var/log/backup.log)
@@ -68,12 +76,4 @@ echo "[$(date +%Y-%m-%d,%H:%M)] Ownership of $BLOCATION/$OF established"
 
 echo "[$(date +%Y-%m-%d,%H:%M)] ====Done===="
 
-term
-
-function term {
-  echo "[$(date +%Y-%m-%d,%H:%M)] Termination, sending email to $ADMINEMAIL"
-  echo -e "Backup of d-sektionen failed :(\nLast 20 log entries were:\n$( tail -n 20 /var/log/backup.log )" | mailx -s 'Backup of d-sektionen.se failed $(date +%Y-%m-%d,%H:%M)' $ADMINEMAIL
-
-  echo "[$(date +%Y-%m-%d,%H:%M)] Exiting..."
-  exit
-}
+exit
