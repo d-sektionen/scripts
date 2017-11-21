@@ -13,6 +13,7 @@ LOG="var/log/backup.log"
 #Mount, here add options here
 MOUNT="/dev/vda1"
 
+ADMINEMAIL="webbutskottet@d.lintek.liu.se"
 
 
 #Output STDOUT & STDERR both to log-file and terminal
@@ -30,7 +31,7 @@ else
    echo "[$(date +%Y-%m-%d,%H:%M)] Mounted!"
   else
    echo "[$(date +%Y-%m-%d,%H:%M)] Something went wrong with the mount, exiting"
-   exit
+   term
   fi
 fi
 
@@ -38,7 +39,7 @@ mkdir $BLOCATION/$OF
 
 if [ ! -d "$BLOCATION/$OF" ]; then
 	echo "[$(date +%Y-%m-%d,%H:%M)] Problem creating the backup folder $BLOCATION/$OF, exiting..."
-	exit
+	term
 fi
 echo "[$(date +%Y-%m-%d,%H:%M)] Backuplocation $BLOCATION/$OF created"
 #The motherload....
@@ -67,4 +68,12 @@ echo "[$(date +%Y-%m-%d,%H:%M)] Ownership of $BLOCATION/$OF established"
 
 echo "[$(date +%Y-%m-%d,%H:%M)] ====Done===="
 
-exit
+term
+
+function term {
+  echo "[$(date +%Y-%m-%d,%H:%M)] Termination, sending email to $ADMINEMAIL"
+  echo -e "Backup of d-sektionen failed :(\nLast 20 log entries were:\n$( tail -n 20 /var/log/backup.log )" | mailx -s 'Backup of d-sektionen.se failed $(date +%Y-%m-%d,%H:%M)' $ADMINEMAIL
+
+  echo "[$(date +%Y-%m-%d,%H:%M)] Exiting..."
+  exit
+}
