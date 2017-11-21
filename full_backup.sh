@@ -18,7 +18,9 @@ ADMINEMAIL="webbutskottet@d.lintek.liu.se"
 #Send email if quitting in an unusial way
 function term {
   echo "[$(date +%Y-%m-%d,%H:%M)] Termination, sending email to $ADMINEMAIL"
-  echo -e "Backup of d-sektionen failed :(\nLast 20 log entries were:\n$( tail -n 20 /var/log/backup.log )" | mailx -s 'Backup of d-sektionen.se failed $(date +%Y-%m-%d,%H:%M)' $ADMINEMAIL
+  #echo "The actual message goes here" | mailx -v -r "user@domain.com" -s "The actual subject line goes here" -S smtp="smtp.domain.com:587" -S smtp-use-starttls -S smtp-auth=login -S smtp-auth-user="user@domain.com" -S smtp-auth-password="password123" -S ssl-verify=ignore the_recipient_email@domain.com
+
+  echo -e "Backup of d-sektionen failed :(\nLast 20 log entries were:\n$( tail -n 20 /var/log/backup.log )" | mailx -v -r $ADMINEMAIL -s 'Backup of d-sektionen.se failed $(date +%Y-%m-%d,%H:%M)' -S smtp="aspmx.l.google.com" $ADMINEMAIL
 
   echo "[$(date +%Y-%m-%d,%H:%M)] Exiting..."
   exit
